@@ -8,11 +8,14 @@
   .bs-3 { -webkit-line-clamp: 3; }
 </style>
 <div class="layout layout--col layout--top gap--small lg:gap--medium">
-  <div class="flex flex--col flex--left gap--small">
-    <span class="label label--small label--underline text--left">Top story</span>
-    <span class="title title--base lg:title--large bs-clamp bs-2">{{ lead.headline }}</span>
-    <span class="description lg:description--large bs-clamp bs-3">{{ lead.summary }}</span>
-    <span class="label label--small">{{ lead.source }}</span>
+  <div class="flex flex--left gap--small" style="align-items:flex-start;width:100%">
+    <div class="flex flex--col flex--left gap--small" style="flex:1 1 auto;min-width:0">
+      <span class="label label--small label--underline text--left">Top story</span>
+      <span class="title title--base lg:title--large bs-clamp bs-2">{{ lead.headline }}</span>
+      <span class="description lg:description--large bs-clamp bs-3">{{ lead.summary }}</span>
+      <span class="label label--small">{{ lead.source }}{% if lead.qr %} · scan to read{% endif %}</span>
+    </div>
+    {% if lead.qr %}<img src="{{ lead.qr }}" width="93" height="93" alt="" style="flex:0 0 auto;width:93px;height:93px;image-rendering:pixelated">{% endif %}
   </div>
   <div class="divider"></div>
   <div class="columns" data-overflow-max-cols="1" data-overflow-max-cols-lg="1" data-overflow-max-cols-portrait="1" data-overflow-max-cols-lg-portrait="1">
