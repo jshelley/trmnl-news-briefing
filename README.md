@@ -7,7 +7,8 @@ A [trmnlp](https://github.com/usetrmnl/trmnlp) recipe that shows one of eleven h
 ## Use it
 
 - **Hosted TRMNL:** install the public recipe at [trmnl.com/recipes/472511](https://trmnl.com/recipes/472511) and pick a briefing in its settings.
-- **BYOS / your own TRMNL account:** clone this repo, `trmnlp serve` to preview, `trmnlp push` to upload it as a private plugin.
+- **Self-hosted BYOS (LaraPaper):** Plugins & Recipes → Add → Import from OSS Catalog → News Briefing → Install. Tested on LaraPaper 0.42.0; it is listed in the [community recipe catalog](https://bnussbau.github.io/trmnl-recipe-catalog/).
+- **Your own TRMNL account:** clone this repo, `trmnlp serve` to preview, `trmnlp push` to upload it as a private plugin.
 
 ## Briefings
 
