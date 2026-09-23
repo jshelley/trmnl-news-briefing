@@ -1,0 +1,29 @@
+{%- assign ranked_s = ranked_at | date: "%s" | plus: 0 -%}
+{%- assign off = trmnl.user.utc_offset | default: 0 | plus: 0 -%}
+{%- if off != 0 -%}{%- assign ranked_local = ranked_s | plus: off -%}{%- assign ranked = ranked_local | date: "%-I:%M %p" -%}{%- else -%}{%- assign ranked = ranked_at | date: "%H:%M" | append: " UTC" -%}{%- endif -%}
+{% if lead %}
+<div class="layout layout--top">
+  <div class="grid grid--cols-5 portrait:grid--cols-1 gap--medium w--full h--full">
+    <div class="col--span-2 portrait:col--span-1 flex flex--col flex--left gap--small">
+      <span class="label label--small label--underline text--left">Top story</span>
+      <span class="title title--small lg:title--large" data-clamp="3" data-clamp-lg="3" data-clamp-portrait="2">{{ lead.headline }}</span>
+      <span class="description lg:description--large" data-clamp="3" data-clamp-lg="4" data-clamp-portrait="2">{{ lead.summary }}</span>
+      <span class="label label--small">{{ lead.source }}</span>
+    </div>
+    <div class="col--span-3 portrait:col--span-1 grid grid--cols-2 portrait:grid--cols-1 gap--small lg:gap--medium">
+      {% for s in stories limit: 4 %}
+      <div class="item">
+        <div class="meta"><span class="index">{{ forloop.index | plus: 1 }}</span></div>
+        <div class="content">
+          <span class="title title--small lg:title--large" data-clamp="3" data-clamp-lg="3" data-clamp-portrait="2">{{ s.headline }}</span>
+          <span class="label label--small">{{ s.source }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="layout layout--top"><span class="label">No stories available yet</span></div>
+{% endif %}
+<div class="title_bar"><span class="title">{{ name }}</span><span class="instance">Ranked {{ ranked }}</span></div>

@@ -1,0 +1,59 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data:
+polling_verb: get
+framework_version:
+serverless_language:
+polling_url: https://briefing-service.wholemind.workers.dev/v1/briefings/{{ briefing }}/summary
+polling_headers: " "
+polling_body:
+id: 472511
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
+oauth_authorize_url: ''
+oauth_token_url: ''
+oauth_scopes: ''
+oauth_scope_separator: ''
+oauth_refresh_url: ''
+oauth_auth_params: ''
+oauth_token_headers: ''
+oauth_token_site: ''
+oauth_token_params: ''
+oauth_token_request_auth_method: ''
+oauth_body_format: ''
+oauth_token_response_metadata: ''
+oauth_authorization_method: ''
+oauth_refresh_params: ''
+oauth_token_field_name: ''
+oauth_expiry_field_name: ''
+oauth_expiry_strategy: ''
+oauth_fixed_expiry_ms: ''
+custom_fields:
+- keyname: briefing
+  name: Briefing
+  field_type: select
+  default: ai
+  help_text: Which hourly briefing to show
+  options:
+  - AI Briefing: ai
+  - AI Research: research
+  - Frontier Labs: labs
+  - Markets: finance
+  - US Sports: sports
+  - European Football: soccer
+  - US News: us
+  - World News: world
+  - Crypto & Onchain: crypto
+- keyname: about
+  name: About this plugin
+  field_type: author_bio
+  description: Hourly LLM-ranked news briefings from ~100 sources (AI news, AI research, frontier labs, markets, US sports, European football, US and world news, crypto) rendered natively for TRMNL. Built by Jordan Shelley. The same service delivers a Morning Paper to reMarkable and Kindle and a JSON/MCP API for agents. Questions or a broken layout? Email hello@wholemind.tech.
+  email_address: hello@wholemind.tech
+  learn_more_url: https://wholemind.tech/briefing/services.html
+  github_url: https://github.com/jshelley/briefing-mcp
+  category: news,productivity
+name: News Briefing
+description: Hourly ranked news, nine verticals
+refresh_interval: 60

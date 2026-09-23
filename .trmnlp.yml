@@ -1,0 +1,6 @@
+---
+# Local dev config for `trmnlp serve` (not uploaded). Live data from the free summary endpoint.
+watch:
+  - src
+custom_fields:
+  briefing: ai

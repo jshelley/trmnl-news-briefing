@@ -1,0 +1,74 @@
+{%- assign ranked_s = ranked_at | date: "%s" | plus: 0 -%}
+{%- assign off = trmnl.user.utc_offset | default: 0 | plus: 0 -%}
+{%- if off != 0 -%}{%- assign ranked_local = ranked_s | plus: off -%}{%- assign ranked = ranked_local | date: "%-I:%M %p" -%}{%- else -%}{%- assign ranked = ranked_at | date: "%H:%M" | append: " UTC" -%}{%- endif -%}
+{%- assign now_s = "now" | date: "%s" | plus: 0 -%}
+<style>
+  /* The lead is clamped with plain CSS, not data-clamp: the overflow engine measures the
+     columns' budget from where they sit, and the JS clamp used to run afterwards, so a long
+     summary hid stories that fit once it shrank. CSS clamps are final before measurement. */
+  .bs-clamp { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+  .bs-2 { -webkit-line-clamp: 2; }
+  .bs-3 { -webkit-line-clamp: 3; }
+  /* Two summary lines on 800x480 (a third row of stories needs the height); three on the X. */
+  .bs-lead-desc { -webkit-line-clamp: 2; }
+  .screen--lg .bs-lead-desc { -webkit-line-clamp: 3; }
+  /* Story snippets: two lines on 800x480, three on the X (its rows are QR-bound, so the third line is free). */
+  .bs-snip { -webkit-line-clamp: 2; }
+  .screen--lg .bs-snip { -webkit-line-clamp: 3; }
+  .bs-lead { display: flex; align-items: flex-start; width: 100%; }
+  .bs-lead-text { flex: 1 1 auto; min-width: 0; }
+  .bs-item { display: flex; align-items: flex-start; }
+  .bs-item .content { flex: 1 1 auto; min-width: 0; }
+  /* 93 px = 29 QR modules at 3 px plus a one-module quiet zone; integer scales keep the code crisp. */
+  .bs-qr { flex: 0 0 auto; width: 93px; height: 93px; margin-left: 6px; image-rendering: pixelated; }
+  .screen--lg .bs-qr { width: 124px; height: 124px; }
+</style>
+{% if lead %}
+{%- assign pub_s = lead.published | date: "%s" | plus: 0 -%}
+{%- assign age_h = now_s | minus: pub_s | divided_by: 3600 -%}
+<div class="layout layout--col layout--top gap--xsmall lg:gap--small">
+  <div class="bs-lead gap--small">
+    <div class="bs-lead-text flex flex--col flex--left gap--xsmall">
+      <span class="title title--large lg:title--xxlarge bs-clamp bs-2">{{ lead.headline }}</span>
+      <span class="description description--large lg:description--large bs-clamp bs-lead-desc">{{ lead.summary }}{% if lead.why and lead.why != "" %} {{ lead.why }}{% endif %}</span>
+      <span class="label label--small lg:label">Top story · {{ lead.source }}{% if lead.published %} · {% if age_h < 1 %}just in{% elsif age_h < 48 %}{{ age_h }}h ago{% else %}{{ age_h | divided_by: 24 }}d ago{% endif %}{% endif %}</span>
+    </div>
+    {% if lead.qr %}<img class="bs-qr" src="{{ lead.qr }}" width="93" height="93" alt="">{% endif %}
+  </div>
+  <div class="divider"></div>
+  <div class="columns" data-overflow-max-cols="2" data-overflow-max-cols-lg="2" data-overflow-max-cols-portrait="1" data-overflow-max-cols-lg-portrait="2">
+    <div class="column" data-list-limit="true" data-list-max-height="auto">
+      {% for s in stories %}
+      {%- assign pub_s = s.published | date: "%s" | plus: 0 -%}
+      {%- assign age_h = now_s | minus: pub_s | divided_by: 3600 -%}
+      <div class="item bs-item">
+        <div class="meta"><span class="index">{{ forloop.index | plus: 1 }}</span></div>
+        <div class="content">
+          <span class="title title--small lg:title--base bs-clamp bs-2">{{ s.headline }}</span>
+          <span class="description lg:description--large bs-clamp bs-snip">{{ s.summary }}</span>
+          <span class="label label--small lg:label">{{ s.source }}{% if s.published %} · {% if age_h < 1 %}just in{% elsif age_h < 48 %}{{ age_h }}h{% else %}{{ age_h | divided_by: 24 }}d{% endif %}{% endif %}</span>
+        </div>
+        {% if s.qr %}<img class="bs-qr" src="{{ s.qr }}" width="93" height="93" alt="">{% endif %}
+      </div>
+      {% endfor %}
+      {% for r in research %}
+      <div class="item bs-item">
+        <div class="meta"><span class="index">R{{ forloop.index }}</span></div>
+        <div class="content">
+          <span class="title title--small lg:title--base bs-clamp bs-2">{{ r.headline }}</span>
+          <span class="description lg:description--large bs-clamp bs-snip">{{ r.summary }}</span>
+          <span class="label label--small lg:label">Research · {{ r.source }}</span>
+        </div>
+        {% if r.qr %}<img class="bs-qr" src="{{ r.qr }}" width="93" height="93" alt="">{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="layout layout--top"><span class="label">No stories available yet</span></div>
+{% endif %}
+<div class="title_bar">
+  <span class="title">{{ name }}</span>
+  <span class="instance">Ranked {{ ranked }} · hourly · scan a code to read</span>
+</div>
